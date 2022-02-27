@@ -12,10 +12,35 @@ p {
 	margin: 0;
 }
 
+.main h1 {
+	color: lightseagreen;
+	font-size: 3rem;
+}
+
+input {
+	height: 2rem;
+	cursor: pointer;
+}
+
+button {
+	height: 2rem;
+	cursor: pointer;
+}
+
 body {
+	background-color: lightgray;
 	margin: 0;
 	font-family: monospace;
 	font-size: 1rem;
+	text-align: center;
+}
+
+.book-filter {
+	margin-top: 1rem;
+}
+
+.book-list {
+	margin-top: 1rem;
 }
 
 .book-list ul {
@@ -33,13 +58,18 @@ body {
 }
 
 .book-card {
+	cursor: pointer;
 	height: 8rem;
 	width: 8rem;
-	/* justify-content: space-between; */
 	background-color: lightyellow;
 	border: 1px solid black;
 	padding: 1rem;
 	margin: 1rem;
+}
+
+.book-details {
+	text-align: left;
+	margin-top: 2rem;
 }
 
 .book-details .red {
@@ -48,4 +78,15 @@ body {
 
 .book-details .green {
 	color: green;
+}
+
+.book-preview {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+}
+
+.book-preview h2 {
+	font-size: 1rem;
 }

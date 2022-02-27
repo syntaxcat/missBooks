@@ -1,11 +1,9 @@
 export default {
 	props: [ 'book' ],
 	template: `
-    <section>
-        <div>
-            {{book.title}} 
-            {{book.listPrice.amount}}{{currency}}
-        </div>
+    <section class="book-preview">
+		<h2>{{book.title}}</h2>
+		{{book.listPrice.amount}}{{currency}}
     </section>
     `,
 	components: {},
