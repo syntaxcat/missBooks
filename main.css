@@ -1,0 +1,51 @@
+* {
+	box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+	margin: 0;
+}
+
+body {
+	margin: 0;
+	font-family: monospace;
+	font-size: 1rem;
+}
+
+.book-list ul {
+	list-style: none;
+	margin: 0;
+	padding: 10px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.books-area {
+	display: flex;
+	justify-content: space-between;
+	background-color: lightpink;
+}
+
+.book-card {
+	height: 8rem;
+	width: 8rem;
+	/* justify-content: space-between; */
+	background-color: lightyellow;
+	border: 1px solid black;
+	padding: 1rem;
+	margin: 1rem;
+}
+
+.book-details .red {
+	color: red;
+}
+
+.book-details .green {
+	color: green;
+}
