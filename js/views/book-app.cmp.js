@@ -20,10 +20,13 @@ export default {
 	},
 	data() {
 		return {
-			books: bookService.query(),
+			books: null,
 			filterBy: null,
 			selectedBook: null
 		};
+	},
+	created() {
+		bookService.query().then((books) => (this.books = books));
 	},
 	methods: {
 		setFilter(filterBy) {

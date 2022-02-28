@@ -1,36 +1,85 @@
 import bookDescription from './book-description.cmp.js';
+import { bookService } from '../services/book-service.js';
+import reviewAdd from './review-add.cmp.js';
+import { eventBus } from '../services/eventBus-service.js';
 
 export default {
-	props: [ 'book' ],
 	template: `
-        <section class="book-details">
-		<img :src="book.thumbnail">
-			<div class="book-info">
-				<h1>{{book.title}}</h1>
-				<div>{{book.subtitle}}</div>
-				<div><span>By (author)</span>{{book.authors}}</div>
-				<div>{{publishedDate}}</div>
-				<book-description :description="book.description" />
-				<div>{{pageCount}}</div>
-				<div>{{book.categories}}</div>
-				<div>{{book.language}}</div>
-				<div v-if="book.listPrice.isOnSale">SALE</div>
-				<div><span :class="colorStyle">{{book.listPrice.amount}}</span></div>
-			</div>
-			<button @click="backToShop">Back to shop</button>
-        </section>
+		<div v-if="book">
+			<section class="book-details">
+				<img :src="book.thumbnail">
+				<div class="book-info">
+					<h1>{{book.title}}</h1>
+					<div>{{book.subtitle}}</div>
+					<div><span>By (author)</span>{{book.authors}}</div>
+					<div>{{publishedDate}}</div>
+					<book-description :description="book.description" />
+					<div>{{pageCount}}</div>
+					<div>{{book.categories}}</div>
+					<div>{{book.language}}</div>
+					<div v-if="book.listPrice.isOnSale">SALE</div>
+					<div><span :class="colorStyle">{{book.listPrice.amount}}</span></div>
+				</div>
+			</section>
+			<section>
+				<review-add @addReview="addReview"/>
+			</section>
+		</div>
+		<div v-for="review in reviews" class="review">
+			{{ review.name }}
+			<br />
+			{{ review.rating }}
+			<br />
+			{{ review.date }}
+			<br />
+			{{ review.freeText }}
+			<br />
+			<button @click="deleteReview(review.id)">X</button>
+		</div>
     `,
 	components: {
-		bookDescription
+		bookDescription,
+		reviewAdd,
 	},
-	created() {},
 	data() {
-		return {};
+		return {
+			book: null,
+			reviews: [],
+		};
+	},
+	created() {
+		const id = this.$route.params.bookId;
+		bookService.get(id).then((book) => {
+			this.book = book;
+		});
+
+		this.getBookReviews(id);
 	},
 	methods: {
-		backToShop() {
-			this.$emit('back');
-		}
+		getBookReviews(id) {
+			bookService.getBookReviews(id).then((reviews) => {
+				this.reviews = reviews;
+			});
+		},
+		deleteReview(reviewId) {
+			bookService.removeReview(reviewId).then(() => {
+				eventBus.emit('show-msg', {
+					txt: 'Removed successfully',
+					type: 'success',
+				});
+				this.getBookReviews(this.book.id);
+			});
+		},
+		addReview(data) {
+			bookService.addReview(this.book.id, data).then(() => {
+				this.getBookReviews(this.book.id);
+				eventBus.emit('show-msg', {
+					txt: 'Review added successfully',
+					type: 'success',
+					link: '/about',
+				});
+			});
+		},
 	},
 	computed: {
 		pageCount() {
@@ -39,15 +88,17 @@ export default {
 			return 'Light Reading';
 		},
 		publishedDate() {
-			if (new Date().getFullYear() - this.book.publishedDate > 10) return 'Veteran Book';
-			if (new Date().getFullYear() - this.book.publishedDate < 1) return 'New!';
+			if (new Date().getFullYear() - this.book.publishedDate > 10)
+				return 'Veteran Book';
+			if (new Date().getFullYear() - this.book.publishedDate < 1)
+				return 'New!';
 		},
 		colorStyle() {
 			return {
 				red: this.book.listPrice.amount > 150,
-				green: this.book.listPrice.amount < 20
+				green: this.book.listPrice.amount < 20,
 			};
-		}
+		},
 	},
-	unmounted() {}
+	unmounted() {},
 };
