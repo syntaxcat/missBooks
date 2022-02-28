@@ -12,9 +12,10 @@ p {
 	margin: 0;
 }
 
-.main h1 {
-	color: lightseagreen;
+.app-header h1 {
+	color: #84a98c;
 	font-size: 3rem;
+	text-decoration: underline;
 }
 
 input {
@@ -28,7 +29,7 @@ button {
 }
 
 body {
-	background-color: lightgray;
+	background-color: #e9ecef;
 	margin: 0;
 	font-family: monospace;
 	font-size: 1rem;
@@ -37,6 +38,8 @@ body {
 
 .book-filter {
 	margin-top: 1rem;
+	background-color: #ced4da;
+	padding: 1rem;
 }
 
 .book-list {
@@ -54,14 +57,13 @@ body {
 .books-area {
 	display: flex;
 	justify-content: space-between;
-	background-color: lightpink;
+	background-color: #ced4da;
 }
 
 .book-card {
 	cursor: pointer;
-	height: 8rem;
 	width: 8rem;
-	background-color: lightyellow;
+	background-color: #e9ecef;
 	border: 1px solid black;
 	padding: 1rem;
 	margin: 1rem;
@@ -80,6 +82,35 @@ body {
 	color: green;
 }
 
+.book-details {
+	padding: 2rem;
+	display: flex;
+	background-color: #d2d8df;
+}
+
+.book-details button {
+	align-self: flex-end;
+	flex-shrink: 0;
+	padding: 0.5rem;
+}
+
+.book-details .book-info {
+	margin: 0 2rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.book-info h1 {
+	font-size: 2rem;
+	color: #52796f;
+	border-bottom: 0.1rem solid #f0f0f0;
+}
+
+.book-info span {
+	color: darkblue;
+}
+
 .book-preview {
 	display: flex;
 	flex-direction: column;
@@ -89,4 +120,10 @@ body {
 
 .book-preview h2 {
 	font-size: 1rem;
+}
+
+.book-filter form {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
 }

@@ -10,7 +10,7 @@ export default {
             <book-filter @onFilter="setFilter"></book-filter>
             <book-list :books="booksToShow" @selected="selectBook"></book-list>
         </div> 
-        <book-details v-else :book="selectedBook"></book-details>
+        <book-details v-else :book="selectedBook" @back="back"></book-details>
     </section>
     `,
 	components: {
@@ -31,6 +31,9 @@ export default {
 		},
 		selectBook(book) {
 			this.selectedBook = book;
+		},
+		back() {
+			this.selectedBook = null;
 		}
 	},
 	computed: {

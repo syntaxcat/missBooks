@@ -1,14 +1,16 @@
 import bookApp from './views/book-app.cmp.js';
+import appHeader from './cmps/app-header.cmp.js';
 
 const options = {
 	template: `
         <section class="main">
-            <h1>missBook</h1>
+            <appHeader/>
             <bookApp/>
         </section>
     `,
 	components: {
-		bookApp
+		bookApp,
+		appHeader
 	}
 };
 

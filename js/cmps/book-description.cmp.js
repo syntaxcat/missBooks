@@ -2,7 +2,7 @@ export default {
 	props: [ 'description' ],
 	template: `
         <section @click="toggle" class="book-description">
-            <h2>{{formattedDescription}}</h2>
+            <div>{{formattedDescription}}</div>
         </section>
     `,
 	components: {},

@@ -4,16 +4,20 @@ export default {
 	props: [ 'book' ],
 	template: `
         <section class="book-details">
-            <h1>{{book.title}}</h1>
-            <h2>{{book.subtitle}}</h2>
-            <h2>{{book.authors}}</h2>
-            <h2>{{publishedDate}}</h2>
-            <book-description :description="book.description" />
-            <h2>{{pageCount}}</h2>
-            <h2>{{book.categories}}</h2>
-            <h2>{{book.language}}</h2>
-            <h2 v-if="book.listPrice.isOnSale">SALE</h2>
-            <h2><span :class="colorStyle">{{book.listPrice.amount}}</span></h2>
+		<img :src="book.thumbnail">
+			<div class="book-info">
+				<h1>{{book.title}}</h1>
+				<div>{{book.subtitle}}</div>
+				<div><span>By (author)</span>{{book.authors}}</div>
+				<div>{{publishedDate}}</div>
+				<book-description :description="book.description" />
+				<div>{{pageCount}}</div>
+				<div>{{book.categories}}</div>
+				<div>{{book.language}}</div>
+				<div v-if="book.listPrice.isOnSale">SALE</div>
+				<div><span :class="colorStyle">{{book.listPrice.amount}}</span></div>
+			</div>
+			<button @click="backToShop">Back to shop</button>
         </section>
     `,
 	components: {
@@ -23,7 +27,11 @@ export default {
 	data() {
 		return {};
 	},
-	methods: {},
+	methods: {
+		backToShop() {
+			this.$emit('back');
+		}
+	},
 	computed: {
 		pageCount() {
 			if (this.book.pageCount > 500) return 'Long reading';
@@ -42,23 +50,4 @@ export default {
 		}
 	},
 	unmounted() {}
-};
-
-const bookDetails = {
-	id: 'GXj93KOkqZoC',
-	title: 'Hacking',
-	subtitle: 'Digital Media and Technological Determinism',
-	authors: [ 'Tim Jordan', 'Puki Ben David' ],
-	publishedDate: 2008,
-	description:
-		'Hacking provides an introduction to the community of hackers and an analysis of the meaning of hacking in twenty-first century societies.',
-	pageCount: 160,
-	categories: [ 'Computers', 'Hack' ],
-	thumbnail: 'http://coding-academy.org/books-photos/1.jpg',
-	language: 'en',
-	listPrice: {
-		amount: 19,
-		currencyCode: 'ILS',
-		isOnSale: true
-	}
 };
