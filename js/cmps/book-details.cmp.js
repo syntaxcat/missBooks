@@ -22,6 +22,10 @@ export default {
 				</div>
 			</section>
 			<section>
+			<router-link :to="'/book/'+book.prevBookId">Prev Book</router-link> | 
+            <router-link :to="'/book/'+book.nextBookId">Next Book</router-link> 
+			</section>
+			<section>
 				<review-add @addReview="addReview"/>
 			</section>
 		</div>
@@ -48,12 +52,7 @@ export default {
 		};
 	},
 	created() {
-		const id = this.$route.params.bookId;
-		bookService.get(id).then((book) => {
-			this.book = book;
-		});
-
-		this.getBookReviews(id);
+		const id = this.bookId;
 	},
 	methods: {
 		getBookReviews(id) {
@@ -80,8 +79,17 @@ export default {
 				});
 			});
 		},
+		loadBook() {
+			bookService.get(this.bookId).then((book) => {
+				this.book = book;
+			});
+			this.getBookReviews(this.bookId);
+		},
 	},
 	computed: {
+		bookId() {
+			return this.$route.params.bookId;
+		},
 		pageCount() {
 			if (this.book.pageCount > 500) return 'Long reading';
 			if (this.book.pageCount > 200) return ' Decent Reading';
@@ -100,5 +108,15 @@ export default {
 			};
 		},
 	},
-	unmounted() {},
+	watch: {
+		bookId: {
+			handler() {
+				if (!this.bookId) {
+					return;
+				}
+				this.loadBook();
+			},
+			immediate: true,
+		},
+	},
 };

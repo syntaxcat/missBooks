@@ -1,5 +1,6 @@
 import { utilService } from './util-service.js';
 import { storageService } from './async-storage-Service.js';
+import tempData from './temp-data.js';
 
 const BOOKS_KEY = 'books';
 const REVIEWS_KEY = 'reviews';
@@ -11,6 +12,8 @@ export const bookService = {
 	addReview,
 	removeReview,
 	getBookReviews,
+	getGoogleBook,
+	addGoogleBook,
 };
 
 function _createBooks() {
@@ -396,7 +399,9 @@ function _createBooks() {
 }
 
 function get(bookId) {
-	return storageService.get(BOOKS_KEY, bookId);
+	return storageService.get(BOOKS_KEY, bookId).then((book) => {
+		return _setNextPrevBookId(book);
+	});
 }
 
 function query() {
@@ -417,5 +422,47 @@ function removeReview(reviewId) {
 function getBookReviews(bookId) {
 	return storageService.query(REVIEWS_KEY).then((reviews) => {
 		return reviews.filter((review) => review.bookId === bookId);
+	});
+}
+
+//each displayed book has a button that adds him to the books array (addBook - does the convert)
+function getGoogleBook(searchWord) {
+	const url = `https://www.googleapis.com/books/v1/volumes?printType=books&q=${searchWord}`;
+	return axios.get(url).then((res) => {
+		// return Promise.resolve(tempData).then((res) => {
+		return res.data.items;
+	});
+}
+
+function addGoogleBook(googleBook) {
+	const book = {
+		title: googleBook.volumeInfo.title,
+		subtitle: googleBook.volumeInfo.subtitle,
+		authors: googleBook.volumeInfo.authors,
+		publishedDate: googleBook.volumeInfo.publishedDate.slice(0, 4),
+		description: googleBook.volumeInfo.description,
+		pageCount: googleBook.volumeInfo.pageCount,
+		categories: googleBook.volumeInfo.categories,
+		thumbnail: googleBook.volumeInfo.imageLinks.thumbnail,
+		language: googleBook.volumeInfo.language,
+		listPrice: {
+			amount: 30,
+			currencyCode: 'ILS',
+			isOnSale: false,
+		},
+	};
+	storageService.post(BOOKS_KEY, book);
+}
+
+function _setNextPrevBookId(book) {
+	return storageService.query(BOOKS_KEY).then((books) => {
+		const bookIdx = books.findIndex((currBook) => currBook.id === book.id);
+		book.nextBookId = books[bookIdx + 1]
+			? books[bookIdx + 1].id
+			: books[0].id;
+		book.prevBookId = books[bookIdx - 1]
+			? books[bookIdx - 1].id
+			: books[books.length - 1].id;
+		return book;
 	});
 }

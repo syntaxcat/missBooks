@@ -2,17 +2,13 @@ export default {
 	props: [],
 	template: `
         <section class="home-page">
-			<h1>home-page</h1>
+			<h1>Welcome to my Bookshop!</h1>
         </section>
     `,
-	components: {
-        
-    },
+	components: {},
 	created() {},
 	data() {
-		return {
-			
-		};
+		return {};
 	},
-	methods: {}
+	methods: {},
 };
